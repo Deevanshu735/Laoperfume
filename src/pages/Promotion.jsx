@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import promotionBanner from "../assets/promotionbanner.webp";
+import promotionBanner from "../assets/slider1.webp";
 
 const Promotion = () => {
   useEffect(() => {
@@ -33,7 +33,7 @@ const Promotion = () => {
             <img
               src={promotionBanner}
               alt="20% Off Selected Brands Promotion"
-              className="w-full h-auto block" 
+              className="w-full h-auto block"
             />
           </Link>
         </motion.div>
