@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, Phone } from "lucide-react";
 import logo from "/src/assets/logo.png"; // Make sure you have logo.png in src/assets/
+import { HashLink } from "react-router-hash-link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +18,7 @@ const Navbar = () => {
   const sidebarLinks = [
     ...navLinks,
     { title: "FAQ", path: "/faq" },
-    { title: "Contact Us", path: "/contact" },
+    { title: "Contact Us", path: "/#contact" },
     { title: "Return & Exchange", path: "/returns" },
     { title: "Delivery", path: "/delivery" },
     { title: "Cookies Policy", path: "/cookies" },
@@ -133,17 +134,30 @@ const Navbar = () => {
                 }}
                 className="flex flex-col space-y-5"
               >
-                {sidebarLinks.map((link) => (
-                  <motion.div key={link.title} variants={linkVariants}>
-                    <NavLink
-                      to={link.path}
-                      onClick={toggleMenu}
-                      className="text-2xl font-display hover:text-brand-gold transition-colors"
-                    >
-                      {link.title}
-                    </NavLink>
-                  </motion.div>
-                ))}
+                {sidebarLinks.map((link) =>
+                  link.path.startsWith("/#") ? (
+                    <motion.div key={link.title} variants={linkVariants}>
+                      <HashLink
+                        smooth
+                        to={link.path}
+                        onClick={toggleMenu} // close menu on click
+                        className="text-2xl font-display hover:text-brand-gold transition-colors"
+                      >
+                        {link.title}
+                      </HashLink>
+                    </motion.div>
+                  ) : (
+                    <motion.div key={link.title} variants={linkVariants}>
+                      <NavLink
+                        to={link.path}
+                        onClick={toggleMenu}
+                        className="text-2xl font-display hover:text-brand-gold transition-colors"
+                      >
+                        {link.title}
+                      </NavLink>
+                    </motion.div>
+                  )
+                )}
               </motion.nav>
             </motion.div>
           </>

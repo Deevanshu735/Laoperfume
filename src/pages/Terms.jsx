@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FileText, HelpCircle, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 const Terms = () => {
   useEffect(() => {
@@ -162,13 +163,14 @@ const Terms = () => {
             If you have any questions about these Terms and Conditions, please
             don't hesitate to reach out to our support team.
           </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+          <HashLink
+            smooth
+            to="/#contact"
+            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
           >
             <Mail className="w-5 h-5 mr-3" />
             Contact Support
-          </a>
+          </HashLink>
         </div>
       </section>
     </motion.div>

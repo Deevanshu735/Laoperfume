@@ -82,7 +82,7 @@ import Delivery from "./pages/Delivery.jsx";
 import Cookies from "./pages/Cookies.jsx";
 import Terms from "./pages/Terms.jsx";
 import Privacy from "./pages/Privacy.jsx";
-import Contact from "./pages/Contact.jsx";
+import ScrollToHash from "./components/ScrollToHash.jsx";
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -94,6 +94,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToHash />
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -120,7 +121,6 @@ function App() {
             <Route path="cookies" element={<Cookies />} />
             <Route path="terms" element={<Terms />} />
             <Route path="privacy" element={<Privacy />} />
-            <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
       </AnimatePresence>

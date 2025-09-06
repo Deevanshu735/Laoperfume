@@ -139,7 +139,7 @@ const AboutUs = () => {
           </p>
           <Link
             to="/products"
-            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
           >
             Shop Now
           </Link>

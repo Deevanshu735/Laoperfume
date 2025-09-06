@@ -1,80 +1,102 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { products as allProducts } from "/src/data/products.js";
-import { Star, ShoppingBag, ArrowRight } from "lucide-react";
-
-// --- IMAGE IMPORTS ---
+import { products as allProducts } from "../data/products.js";
+import ProductCard from "../components/ProductCard.jsx";
+import Promotion from "../pages/Promotion.jsx";
+import Contact from "../pages/Contact.jsx";
+import { ArrowRight } from "lucide-react";
 import slider1 from "../assets/slider1.webp";
 import slider2 from "../assets/slider2.webp";
+import mobileslider1 from "../assets/mobileslider.jpg";
+import mobileslider2 from "../assets/mobileslider2.jpg";
 import offer1 from "../assets/offer1.webp";
 import offer2 from "../assets/offer2.webp";
 import offer3 from "../assets/offer3.webp";
-import Promotion from "./Promotion";
+import all from "../assets/together.svg";
+import me from "../assets/manager.svg";
+import wo from "../assets/woman.svg";
+import trend from "../assets/trending.svg";
+
+const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({ width: undefined });
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({ width: window.innerWidth });
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return windowSize;
+};
 
 const Home = ({ selectProduct }) => {
-  const trendingProducts = allProducts.filter((p) => p.category === "Trending");
-
-  const sliderImages = [slider1, slider2];
+  const { width } = useWindowSize();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+
+  const sliderImages =
+    width < 768 ? [mobileslider1, mobileslider2] : [slider1, slider2];
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setCurrentImageIndex(
         (prevIndex) => (prevIndex + 1) % sliderImages.length
       );
-    }, 5000); // Change slide every 5 seconds
+    }, 5000);
     return () => clearTimeout(timer);
   }, [currentImageIndex, sliderImages.length]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100 },
-    },
-  };
+  useEffect(() => {
+    let filtered;
+    if (activeCategory === "All") {
+      filtered = allProducts.filter((p) =>
+        ["Men", "Women", "Unisex"].includes(p.category)
+      );
+    } else if (activeCategory === "Trending") {
+      filtered = allProducts.filter((p) => p.totalSales > 500);
+    } else {
+      filtered = allProducts.filter((p) => p.category === activeCategory);
+    }
+    setDisplayedProducts(filtered.slice(0, 12));
+  }, [activeCategory]);
 
   const offers = [
     {
       img: offer1,
       title: "Illustrious Deluxe",
-      description: "For Men - Up to 20% Off",
-      link: "/products",
+      description: "Up to 20% Off",
+      link: "/promotion",
     },
     {
       img: offer2,
       title: "Catsuit Noir",
-      description: "For Men - Up to 20% Off",
-      link: "/products",
+      description: "Up to 20% Off",
+      link: "/promotion",
     },
     {
       img: offer3,
       title: "Spring Paradise",
-      description: "Body Spray - Up to 20% Off",
-      link: "/products",
+      description: "Up to 20% Off",
+      link: "/promotion",
     },
+  ];
+
+  const categoryCards = [
+    { name: "All", image: all },
+    { name: "Men", image: me },
+    { name: "Women", image: wo },
+    { name: "Trending", image: trend },
   ];
 
   return (
     <div className="bg-zinc-50 text-black">
-      {/* Hero Slider Section */}
       <section className="relative h-[60vh] md:h-[85vh] w-full overflow-hidden text-white">
         <AnimatePresence>
           <motion.div
             key={currentImageIndex}
-            // --- THE FIX IS HERE ---
-            // On mobile (default), we set the background position to the top.
-            // On medium screens and up (md:), we set it back to the center.
             className="absolute inset-0 bg-cover bg-top md:bg-center"
             style={{
               backgroundImage: `url(${sliderImages[currentImageIndex]})`,
@@ -103,40 +125,29 @@ const Home = ({ selectProduct }) => {
           >
             A curated collection of the world's finest fragrances.
           </motion.p>
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-          >
-            <Link
-              to="/products"
-              className="bg-brand-gold text-black font-bold py-3 px-8 rounded-md hover:bg-opacity-80 transition-colors text-lg"
-            >
-              Explore Collection
-            </Link>
-          </motion.div>
         </div>
       </section>
 
-      {/* Premium Offer Section */}
-      <section className="py-10 sm:py-20">
+      <section className="py-20 sm:py-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-4">
             Limited Time Offers
           </h2>
-          <p className="text-center text-gray-600 max-w-xl mx-auto mb-12">
-            Indulge in exclusive savings on our most coveted collections and
-            special editions.
-          </p>
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
             {offers.map((offer, index) => (
-              <motion.div key={index} variants={itemVariants}>
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { y: 20, opacity: 0 },
+                  visible: { y: 0, opacity: 1 },
+                }}
+              >
                 <Link to={offer.link}>
                   <div className="group relative block overflow-hidden rounded-lg">
                     <img
@@ -159,80 +170,90 @@ const Home = ({ selectProduct }) => {
         </div>
       </section>
 
-      {/* Trending Product Section */}
-      <section className="py-5 sm:py-28 bg-white">
+      <section className="bg-white py-20 sm:py-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-4">
-            Trending Now
+          <h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-12">
+            Browse by Categories
           </h2>
-          <p className="text-center text-gray-600 max-w-xl mx-auto mb-12">
-            Explore our most popular and sought-after fragrances of the season.
-          </p>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-            variants={containerVariants}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
-            {trendingProducts.map((product) => (
+            {categoryCards.map((cat) => (
               <motion.div
-                key={product.id}
-                className="group relative border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-brand-gold"
-                variants={itemVariants}
+                key={cat.name}
+                variants={{
+                  hidden: { y: 20, opacity: 0 },
+                  visible: { y: 0, opacity: 1 },
+                }}
               >
-                <div className="w-full h-64 bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                <button
+                  onClick={() => setActiveCategory(cat.name)}
+                  className={`w-full p-4 sm:p-6 border flex flex-col items-center gap-4 transition-all duration-300 group ${
+                    activeCategory === cat.name
+                      ? "border-brand-gold border-2 shadow-lg"
+                      : "border-gray-200 border-0 hover:shadow-md"
+                  }`}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#FEB564",
+                      maskImage: `url(${cat.image})`,
+                      maskSize: "contain",
+                      maskRepeat: "no-repeat",
+                      maskPosition: "center",
+                    }}
+                    className="w-16 h-16 sm:w-20 sm:h-20"
                   />
-                </div>
-                <div className="p-4 bg-white">
-                  <h3 className="text-lg font-bold font-display truncate">
-                    {product.name}
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-2">
-                    {product.category}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xl font-semibold">
-                      ${product.price.toFixed(2)}
-                    </p>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-                      <span className="text-sm text-gray-600">
-                        {product.rating}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Link
-                    to={`/product/${product.id}`}
-                    onClick={() => selectProduct(product)}
-                    className="flex items-center bg-brand-gold text-black font-bold py-2 px-6 rounded-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
-                  >
-                    <ShoppingBag className="w-5 h-5 mr-2" />
-                    Buy Now
-                  </Link>
-                </div>
+                  <span className="font-bold text-[#FEB564] font-display text-lg sm:text-xl">
+                    {cat.name}
+                  </span>
+                </button>
               </motion.div>
             ))}
+          </motion.div>
+
+          {/* --- PRODUCT GRID PREVIEW WITH JUMPING BEHAVIOR FIXED --- */}
+          <motion.div
+            className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8"
+            layout
+          >
+            <AnimatePresence exitBeforeEnter>
+              {displayedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  selectProduct={selectProduct}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  layout
+                />
+              ))}
+            </AnimatePresence>
           </motion.div>
 
           <div className="text-center mt-16">
             <Link
               to="/products"
-              className="font-bold text-black hover:text-brand-gold transition-colors inline-flex items-center text-lg"
+              className="inline-flex items-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
             >
-              View All Products <ArrowRight className="w-5 h-5 ml-2" />
+              View All Collection
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
         </div>
       </section>
+
       <Promotion />
+      <section id="contact">
+        <Contact />
+      </section>
     </div>
   );
 };

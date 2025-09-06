@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import promotionBanner from "../assets/slider1.webp";
+import promotionBannerMobile from "../assets/banner.jpg";
+import promotionBannerDesktop from "../assets/banner2.jpg";
 
 const Promotion = () => {
   useEffect(() => {
@@ -22,19 +23,33 @@ const Promotion = () => {
       animate="visible"
       exit="exit"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+      <div className="max-w-7xl mx-auto px-0 sm:px-0 lg:px-0">
         <motion.div
-          className="overflow-hidden rounded-lg shadow-xl"
+          className="overflow-hidden  shadow-xl"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <Link to="/products">
-            <img
-              src={promotionBanner}
-              alt="20% Off Selected Brands Promotion"
-              className="w-full h-auto block"
-            />
+            <picture>
+              {/* Desktop / Tablet */}
+              <source
+                media="(min-width: 768px)"
+                srcSet={promotionBannerDesktop}
+              />
+              {/* Mobile */}
+              <img
+                src={promotionBannerMobile}
+                alt="Special Promotion"
+                className="
+                  w-full
+                  h-[60vh] sm:h-[75vh] lg:h-[80vh] 
+                  object-cover
+                  object-right    
+                  block
+                "
+              />
+            </picture>
           </Link>
         </motion.div>
       </div>

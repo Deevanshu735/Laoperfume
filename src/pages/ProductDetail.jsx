@@ -30,6 +30,10 @@ const ProductDetail = ({ selectedProduct }) => {
     return <Navigate to="/" />;
   }
 
+  // --- 1. Calculate the Total Price ---
+  // This value will automatically update whenever 'quantity' or 'product' changes.
+  const totalPrice = product.price * quantity;
+
   const handleQuantityChange = (amount) => {
     setQuantity((prev) => Math.max(1, prev + amount));
   };
@@ -40,9 +44,12 @@ const ProductDetail = ({ selectedProduct }) => {
     exit: { opacity: 0 },
   };
 
-  const salePercentage = product.onSale
-    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : 0;
+  const salePercentage =
+    product.onSale && product.oldPrice
+      ? Math.round(
+          ((product.oldPrice - product.price) / product.oldPrice) * 100
+        )
+      : 0;
 
   return (
     <motion.div
@@ -52,11 +59,11 @@ const ProductDetail = ({ selectedProduct }) => {
       animate="visible"
       exit="exit"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Product Image */}
           <motion.div
-            className="w-full h-96 lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden sticky top-28"
+            className="w-full h-80 sm:h-96 lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden lg:sticky top-28"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -83,7 +90,7 @@ const ProductDetail = ({ selectedProduct }) => {
             <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
               {product.brand}
             </p>
-            <h1 className="text-4xl md:text-5xl font-bold font-display my-3">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display my-3">
               {product.name}
             </h1>
 
@@ -103,27 +110,43 @@ const ProductDetail = ({ selectedProduct }) => {
               <span className="text-gray-600">({product.reviews} reviews)</span>
             </div>
 
-            <p className="text-gray-700 text-lg leading-relaxed mb-6">
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
               This is a placeholder description for {product.name}. In a real
               application, this would contain detailed notes about the
               fragrance, its composition, and the story behind it.
             </p>
 
-            {/* Price Section */}
-            <div className="flex items-baseline gap-4 mb-6">
-              <p className="text-4xl font-bold font-sans text-green-600">
-                {formatPrice(product.price)}
-              </p>
-              {product.onSale && (
-                <p className="text-2xl text-gray-400 line-through">
-                  {formatPrice(product.oldPrice)}
+            {/* --- 2. New, Clearer Price Section --- */}
+            <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 mb-6">
+              <div className="flex justify-between items-center text-gray-600">
+                <span className="text-base sm:text-lg">Price per item</span>
+                <div className="flex items-baseline gap-3">
+                  {product.onSale && product.oldPrice && (
+                    <p className="text-lg sm:text-xl text-gray-400 line-through">
+                      {formatPrice(product.oldPrice)}
+                    </p>
+                  )}
+                  <p className="text-lg sm:text-xl font-semibold text-gray-800">
+                    {formatPrice(product.price)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-zinc-200 my-3"></div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-xl sm:text-2xl font-bold">
+                  Total Price
+                </span>
+                <p className="text-2xl sm:text-3xl font-bold text-brand-gold">
+                  {formatPrice(totalPrice)}
                 </p>
-              )}
+              </div>
             </div>
 
             {/* Quantity Selector */}
             <div className="flex items-center space-x-4 mb-8">
-              <p className="font-semibold text-lg">Quantity:</p>
+              <p className="font-semibold text-base sm:text-lg">Quantity:</p>
               <div className="flex items-center border border-gray-300 rounded-md">
                 <button
                   onClick={() => handleQuantityChange(-1)}
@@ -146,8 +169,8 @@ const ProductDetail = ({ selectedProduct }) => {
             {/* Action Button */}
             <Link
               to={`/checkout`}
-              state={{ product, quantity }} // Pass product and quantity to the checkout page
-              className="w-full flex items-center justify-center bg-black text-white font-bold py-4 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+              state={{ product, quantity, totalPrice }} // Pass total price to checkout
+              className="w-full flex items-center justify-center bg-black text-white font-bold py-3 sm:py-4 px-8 rounded-md hover:bg-gray-800 transition-colors text-base sm:text-lg"
             >
               <ShoppingCart className="w-6 h-6 mr-3" />
               Proceed to Checkout

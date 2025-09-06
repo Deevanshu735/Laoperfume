@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 // Mock data for news articles
 const newsArticles = [
@@ -164,13 +165,14 @@ const News = () => {
             Have questions or want to be the first to know about new arrivals?
             Contact us or subscribe to our newsletter.
           </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+          <HashLink
+            smooth
+            to="/#contact"
+            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
           >
             <Mail className="w-5 h-5 mr-3" />
             Contact Us
-          </Link>
+          </HashLink>
         </div>
       </section>
     </motion.div>

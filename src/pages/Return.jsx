@@ -7,6 +7,7 @@ import {
   Mail,
   AlertTriangle,
 } from "lucide-react";
+import { HashLink } from "react-router-hash-link";
 
 const Returns = () => {
   useEffect(() => {
@@ -224,6 +225,7 @@ const Returns = () => {
       </div>
 
       {/* Contact Support Section */}
+      {/* Contact Support Section */}
       <section className="bg-white py-20">
         <div className="container mx-auto text-center px-4">
           <HelpCircle className="mx-auto h-12 w-12 text-brand-gold" />
@@ -234,13 +236,14 @@ const Returns = () => {
             If you have any further questions or concerns regarding our Return &
             Exchange Policy, feel free to contact our customer support team.
           </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+          <HashLink
+            smooth
+            to="/#contact"
+            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
           >
             <Mail className="w-5 h-5 mr-3" />
             Contact Support
-          </a>
+          </HashLink>
         </div>
       </section>
     </motion.div>

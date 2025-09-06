@@ -8,7 +8,7 @@ const Products = ({ selectProduct }) => {
   const [filteredProducts, setFilteredProducts] = useState(allProducts);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeBrands, setActiveBrands] = useState([]);
-  const [price, setPrice] = useState(600000); // Set max price from your data
+  const [price, setPrice] = useState(600000);
   const [sortBy, setSortBy] = useState("newest");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -18,16 +18,23 @@ const Products = ({ selectProduct }) => {
     []
   );
 
-  // This is the core logic that filters and sorts the products
   useEffect(() => {
     let result = allProducts;
 
-    if (activeCategory !== "All") {
+    if (activeCategory === "Trending") {
+      result = result.filter((p) => p.totalSales > 500);
+    } else if (activeCategory === "All") {
+      result = result.filter((p) =>
+        ["Men", "Women", "Unisex"].includes(p.category)
+      );
+    } else if (activeCategory !== "All") {
       result = result.filter((p) => p.category === activeCategory);
     }
+
     if (activeBrands.length > 0) {
       result = result.filter((p) => activeBrands.includes(p.brand));
     }
+
     result = result.filter((p) => p.price <= price);
 
     const sortedResult = [...result];
@@ -46,6 +53,7 @@ const Products = ({ selectProduct }) => {
         sortedResult.sort((a, b) => b.id - a.id);
         break;
     }
+
     setFilteredProducts(sortedResult);
   }, [activeCategory, activeBrands, price, sortBy]);
 
@@ -59,7 +67,6 @@ const Products = ({ selectProduct }) => {
     );
   };
 
-  // Reusable component for the filter controls
   const FilterControls = () => (
     <aside className="space-y-8">
       <div>
@@ -179,20 +186,27 @@ const Products = ({ selectProduct }) => {
               ))}
             </div>
 
+            {/* --- PRODUCTS GRID WITH ANIMATION FIX --- */}
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
+              className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-8"
               layout
             >
-              <AnimatePresence>
+              <AnimatePresence exitBeforeEnter>
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     selectProduct={selectProduct}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    layout
                   />
                 ))}
               </AnimatePresence>
             </motion.div>
+
             {filteredProducts.length === 0 && (
               <div className="text-center py-20 col-span-full">
                 <h3 className="text-2xl font-bold">No Products Found</h3>

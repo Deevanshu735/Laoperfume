@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { HashLink } from "react-router-hash-link"; // ✅ added
 import { Mail, Phone, MapPin } from "lucide-react";
-import logo from "../assets/logo.png"; // Make sure you have logo.png in src/assets/
+import logo from "../assets/logo.png";
 
 const Footer = () => {
   const supportLinks = [
     { title: "FAQ", path: "/faq" },
-    { title: "Contact Us", path: "/contact" },
+    { title: "Contact Us", path: "/contact" }, // will scroll to Home's contact section
     { title: "Return & Exchange", path: "/returns" },
     { title: "Delivery", path: "/delivery" },
   ];
@@ -39,12 +40,22 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               {supportLinks.map((link) => (
                 <li key={link.title}>
-                  <NavLink
-                    to={link.path}
-                    className="hover:text-brand-gold transition-colors duration-300"
-                  >
-                    {link.title}
-                  </NavLink>
+                  {link.path === "/contact" ? (
+                    <HashLink
+                      smooth
+                      to="/#contact"
+                      className="hover:text-brand-gold transition-colors duration-300"
+                    >
+                      {link.title}
+                    </HashLink>
+                  ) : (
+                    <NavLink
+                      to={link.path}
+                      className="hover:text-brand-gold transition-colors duration-300"
+                    >
+                      {link.title}
+                    </NavLink>
+                  )}
                 </li>
               ))}
             </ul>

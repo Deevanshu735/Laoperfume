@@ -135,7 +135,7 @@ const Contact = () => {
                   name="name"
                   id="name"
                   required
-                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                  className="w-full border-gray-300 shadow-sm focus:ring-brand-gold focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -150,7 +150,7 @@ const Contact = () => {
                   name="email"
                   id="email"
                   required
-                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                  className="w-full border-gray-300  shadow-sm focus:ring-brand-gold focus:border-brand-gold"
                 />
               </div>
               <div>
@@ -165,13 +165,13 @@ const Contact = () => {
                   id="message"
                   rows="5"
                   required
-                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                  className="w-full border-gray-300  shadow-sm focus:ring-brand-gold focus:border-brand-gold"
                 ></textarea>
               </div>
               <div>
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+                  className="w-full flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
                 >
                   <Send className="w-5 h-5 mr-3" />
                   Send Message

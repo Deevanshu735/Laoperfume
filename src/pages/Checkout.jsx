@@ -14,7 +14,8 @@ const formatPrice = (price) => {
 
 const Checkout = () => {
   const location = useLocation();
-  const { product, quantity } = location.state || {};
+  // --- 1. Receive `totalPrice` from the previous page ---
+  const { product, quantity, totalPrice } = location.state || {};
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,7 +31,8 @@ const Checkout = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!product) {
+  if (!product || !totalPrice) {
+    // Also check if totalPrice exists
     return <Navigate to="/" />;
   }
 
@@ -70,7 +72,8 @@ const Checkout = () => {
       ------------------------
       Product: ${product.name} (${product.brand})
       Quantity: ${quantity}
-      Total Price: ${formatPrice(product.price * quantity)}
+      // --- 3. Use the received totalPrice in the WhatsApp message ---
+      Total Price: ${formatPrice(totalPrice)}
       ------------------------
       Customer Details:
       Name: ${formData.name}
@@ -83,10 +86,10 @@ const Checkout = () => {
       }
     `;
 
+    // Replace YOUR_PHONE_NUMBER with your actual WhatsApp number including country code
     const whatsappUrl = `https://wa.me/YOUR_PHONE_NUMBER?text=${encodeURIComponent(
       message.trim()
     )}`;
-
     window.location.href = whatsappUrl;
   };
 
@@ -106,7 +109,8 @@ const Checkout = () => {
     visible: { y: 0, opacity: 1 },
   };
 
-  const totalPrice = product.price * quantity;
+  // --- 2. The redundant price calculation is now removed ---
+  // const totalPrice = product.price * quantity; // This line is no longer needed
 
   return (
     <motion.div
