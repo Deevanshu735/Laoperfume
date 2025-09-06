@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import promotionBanner from "../assets/promotionbanner.webp"; // Import the banner image
+import promotionBanner from "../assets/promotionbanner.webp";
 
 const Promotion = () => {
   useEffect(() => {
