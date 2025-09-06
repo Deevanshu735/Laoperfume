@@ -5,7 +5,6 @@ import promotionBanner from "../assets/promotionbanner.webp";
 
 const Promotion = () => {
   useEffect(() => {
-    // Scroll to the top when the page loads
     window.scrollTo(0, 0);
   }, []);
 
@@ -30,12 +29,11 @@ const Promotion = () => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          {/* The entire banner is now a clickable link to the products page */}
           <Link to="/products">
             <img
               src={promotionBanner}
               alt="20% Off Selected Brands Promotion"
-              className="w-full h-auto block" // 'block' removes any extra space below the image
+              className="w-full h-auto block" 
             />
           </Link>
         </motion.div>
