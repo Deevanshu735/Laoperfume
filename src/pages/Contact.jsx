@@ -1,0 +1,188 @@
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
+
+const Contact = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const pageVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0 },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.6 } },
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // In a real application, you would handle form submission here
+    // For example, send the data to a server or an email service.
+    alert("Thank you for your message! We will get back to you shortly.");
+    e.target.reset();
+  };
+
+  return (
+    <motion.div
+      className="bg-zinc-50"
+      variants={pageVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      {/* Hero Section */}
+      <div className="bg-white py-20 text-center px-4">
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold font-display"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7 }}
+        >
+          Get In Touch
+        </motion.h1>
+        <motion.p
+          className="text-gray-600 mt-4 max-w-2xl mx-auto"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          We'd love to hear from you. Whether you have a question about our
+          products, an order, or anything else, our team is ready to answer all
+          your questions.
+        </motion.p>
+      </div>
+
+      {/* Main Content: Form & Details */}
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-10"
+        >
+          {/* Contact Details & Map */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm space-y-8"
+          >
+            <div>
+              <h2 className="text-2xl font-bold font-display mb-6">
+                Contact Information
+              </h2>
+              <div className="space-y-4 text-gray-700">
+                <a
+                  href="tel:+8562028987977"
+                  className="flex items-center group"
+                >
+                  <Phone className="w-5 h-5 mr-4 text-brand-gold" />
+                  <span className="group-hover:text-brand-gold transition-colors">
+                    +8562028987977
+                  </span>
+                </a>
+                <a
+                  href="mailto:admin@laoperfume.la"
+                  className="flex items-center group"
+                >
+                  <Mail className="w-5 h-5 mr-4 text-brand-gold" />
+                  <span className="group-hover:text-brand-gold transition-colors">
+                    admin@laoperfume.la
+                  </span>
+                </a>
+                <div className="flex items-start">
+                  <MapPin className="w-5 h-5 mr-4 text-brand-gold mt-1" />
+                  <span>Sokpaluang Road, Vientiane, Laos</span>
+                </div>
+              </div>
+            </div>
+            {/* Embedded Google Map */}
+            <div className="h-64 md:h-80 w-full rounded-lg overflow-hidden">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3794.288820658052!2d102.6200156758655!3d17.96280818301564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3124686206e3006d%3A0x2865327299a9a13b!2sSokpaluang%20Rd%2C%20Vientiane%2C%20Laos!5e0!3m2!1sen!2sus!4v1693948210376!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Laoperfume Location"
+              ></iframe>
+            </div>
+          </motion.div>
+
+          {/* Contact Form */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm"
+          >
+            <h2 className="text-2xl font-bold font-display mb-6">
+              Send Us a Message
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  id="message"
+                  rows="5"
+                  required
+                  className="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-gold focus:border-brand-gold"
+                ></textarea>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="w-full flex items-center justify-center bg-black text-white font-bold py-3 px-8 rounded-md hover:bg-gray-800 transition-colors text-lg"
+                >
+                  <Send className="w-5 h-5 mr-3" />
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+export default Contact;
