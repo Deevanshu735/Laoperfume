@@ -14,5 +14,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  // --- THE FIX IS HERE ---
+  // The forms plugin is added inside the plugins array.
+  plugins: [require("@tailwindcss/forms")],
 };

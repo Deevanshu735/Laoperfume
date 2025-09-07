@@ -163,10 +163,10 @@ const Terms = () => {
             If you have any questions about these Terms and Conditions, please
             don't hesitate to reach out to our support team.
           </p>
-          <HashLink
+           <HashLink
             smooth
             to="/#contact"
-            className="inline-flex items-center justify-center bg-black text-white font-bold py-3 px-8  hover:bg-gray-800 transition-colors text-lg"
+            className="inline-flex items-center justify-center bg-brand-gold text-black font-bold py-3 px-8 hover:bg-opacity-90 transition-all text-lg transform hover:scale-105"
           >
             <Mail className="w-5 h-5 mr-3" />
             Contact Support
