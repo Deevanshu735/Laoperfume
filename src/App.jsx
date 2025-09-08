@@ -1,6 +1,10 @@
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import { AnimatePresence } from "framer-motion";
+
+// import AOS from "aos";
+// import "aos/dist/aos.css";
+
 // import MainLayout from "./layouts/MainLayout.jsx";
 // import Home from "./pages/Home.jsx";
 // import Products from "./pages/Products.jsx";
@@ -9,7 +13,7 @@
 // import AboutUs from "./pages/AboutUs.jsx";
 // import News from "./pages/News.jsx";
 // import Faq from "./pages/Faq.jsx";
-// import Return from "./pages/Return.jsx";
+// import Return from "./pages/Return.jsx"; // Corrected import name
 // import Delivery from "./pages/Delivery.jsx";
 // import Cookies from "./pages/Cookies.jsx";
 // import Terms from "./pages/Terms.jsx";
@@ -19,7 +23,14 @@
 // function App() {
 //   const [selectedProduct, setSelectedProduct] = useState(null);
 
-//   // This function sets the product that the user clicks on.
+//   useEffect(() => {
+//     AOS.init({
+//       duration: 800,
+//       once: true,
+//       offset: 50,
+//     });
+//   }, []);
+
 //   const handleProductSelect = (product) => {
 //     setSelectedProduct(product);
 //   };
@@ -29,7 +40,10 @@
 //       <ScrollToHash />
 //       <AnimatePresence mode="wait">
 //         <Routes>
-//           <Route path="/" element={<MainLayout />}>
+//           <Route
+//             path="/"
+//             element={<MainLayout selectProduct={handleProductSelect} />}
+//           >
 //             <Route
 //               index
 //               element={<Home selectProduct={handleProductSelect} />}
@@ -40,13 +54,16 @@
 //             />
 //             <Route
 //               path="product/:id"
-//               element={<ProductDetail selectedProduct={selectedProduct} />}
+//               element={
+//                 <ProductDetail
+//                   selectedProduct={selectedProduct}
+//                   selectProduct={handleProductSelect}
+//                 />
+//               }
 //             />
 //             <Route path="checkout" element={<Checkout />} />
 //             <Route path="about" element={<AboutUs />} />
 //             <Route path="news" element={<News />} />
-
-//             {/* Routes for all informational pages */}
 //             <Route path="faq" element={<Faq />} />
 //             <Route path="returns" element={<Return />} />
 //             <Route path="delivery" element={<Delivery />} />
@@ -61,12 +78,10 @@
 // }
 
 // export default App;
-
-import React, { useState, useEffect } from "react"; // Import useEffect
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-// Import AOS library and its styles
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -86,20 +101,13 @@ import Privacy from "./pages/Privacy.jsx";
 import ScrollToHash from "./components/ScrollToHash.jsx";
 
 function App() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // This initializes the AOS library when the app loads
   useEffect(() => {
     AOS.init({
-      duration: 800, // Animation duration in milliseconds
-      once: true, // Whether animation should happen only once
-      offset: 50, // Offset (in px) from the original trigger point
+      duration: 800,
+      once: true,
+      offset: 50,
     });
   }, []);
-
-  const handleProductSelect = (product) => {
-    setSelectedProduct(product);
-  };
 
   return (
     <Router>
@@ -107,18 +115,9 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route
-              index
-              element={<Home selectProduct={handleProductSelect} />}
-            />
-            <Route
-              path="products"
-              element={<Products selectProduct={handleProductSelect} />}
-            />
-            <Route
-              path="product/:id"
-              element={<ProductDetail selectedProduct={selectedProduct} />}
-            />
+            <Route index element={<Home />} />
+            <Route path="products" element={<Products />} />
+            <Route path="product/:id" element={<ProductDetail />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="about" element={<AboutUs />} />
             <Route path="news" element={<News />} />

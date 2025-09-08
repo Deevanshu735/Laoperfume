@@ -259,7 +259,7 @@ import { products as allProducts } from "/src/data/products.js";
 import ProductCard from "/src/components/ProductCard.jsx";
 import { SlidersHorizontal, X } from "lucide-react";
 
-const Products = ({ selectProduct }) => {
+const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState(allProducts);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeBrands, setActiveBrands] = useState([]);
@@ -275,18 +275,16 @@ const Products = ({ selectProduct }) => {
 
   useEffect(() => {
     let result = allProducts;
-    if (activeCategory === "Trending") {
+    if (activeCategory === "Trending")
       result = result.filter((p) => p.totalSales > 500);
-    } else if (activeCategory === "All") {
+    else if (activeCategory === "All")
       result = result.filter((p) =>
         ["Men", "Women", "Unisex"].includes(p.category)
       );
-    } else if (activeCategory !== "All") {
+    else if (activeCategory !== "All")
       result = result.filter((p) => p.category === activeCategory);
-    }
-    if (activeBrands.length > 0) {
+    if (activeBrands.length > 0)
       result = result.filter((p) => activeBrands.includes(p.brand));
-    }
     result = result.filter((p) => p.price <= price);
     const sortedResult = [...result];
     switch (sortBy) {
@@ -318,8 +316,7 @@ const Products = ({ selectProduct }) => {
   };
 
   const FilterControls = () => (
-    <aside className="space-y-8">
-      {/* Sort By */}
+    <aside className="space-y-4">
       <div>
         <h3 className="font-display font-bold text-xl mb-4 text-gray-800 border-b pb-2">
           Sort By
@@ -348,7 +345,6 @@ const Products = ({ selectProduct }) => {
           ))}
         </div>
       </div>
-      {/* Price */}
       <div>
         <h3 className="font-display font-bold text-xl mb-4 text-gray-800 border-b pb-2">
           Price
@@ -366,12 +362,11 @@ const Products = ({ selectProduct }) => {
           Up to ₭{price.toLocaleString()}
         </div>
       </div>
-      {/* Brand */}
       <div>
         <h3 className="font-display font-bold text-xl mb-4 text-gray-800 border-b pb-2">
           Brand
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
           {brands.map((brand) => (
             <label
               key={brand}
@@ -419,32 +414,33 @@ const Products = ({ selectProduct }) => {
         </p>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="lg:hidden mb-6 flex justify-between items-center">
-          <div className="flex justify-center flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors duration-300 ${
-                  activeCategory === cat
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-700 border border-gray-200"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-12">
+        <div className="lg:hidden mb-6 flex items-center gap-2">
           <button
             onClick={() => setIsSidebarOpen(true)}
             className="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded-full text-gray-700"
           >
             <SlidersHorizontal size={20} />
           </button>
+          <div className="flex-grow overflow-x-auto whitespace-nowrap hide-scrollbar">
+            <div className="flex gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors duration-300 flex-shrink-0 ${
+                    activeCategory === cat
+                      ? "bg-gray-900 text-white"
+                      : "bg-white text-gray-700 border border-gray-200"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* --- THE FIX IS HERE --- */}
         <div className="grid grid-cols-1 lg:grid-cols-4 lg:items-start gap-8">
           <div className="hidden lg:block lg:sticky top-28">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -473,18 +469,18 @@ const Products = ({ selectProduct }) => {
               className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-8"
               layout
             >
-              <AnimatePresence mode="sync">
+              <AnimatePresence>
                 {filteredProducts.map((product) => (
-                  <ProductCard
+                  <motion.div
                     key={product.id}
-                    product={product}
-                    selectProduct={selectProduct}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
                     layout
-                  />
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
                 ))}
               </AnimatePresence>
             </motion.div>
@@ -495,7 +491,7 @@ const Products = ({ selectProduct }) => {
                   No Products Found
                 </h3>
                 <p className="text-gray-500 mt-2">
-                  Try adjusting your filters to find what you're looking for.
+                  Try adjusting your filters.
                 </p>
               </div>
             )}
@@ -521,7 +517,7 @@ const Products = ({ selectProduct }) => {
               className="fixed top-0 left-0 h-full w-4/5 max-w-xs bg-white z-50 p-6 overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold font-display">Filters</h2>
+                <h2 className="text-2xl font-bold font-display">Filters</h2>
                 <button onClick={() => setIsSidebarOpen(false)}>
                   <X />
                 </button>
