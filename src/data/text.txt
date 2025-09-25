@@ -1,0 +1,3 @@
+Payment Method: ${
+        paymentMethod === "cod" ? "Cash on Delivery" : "QR Code (Paid)"
+      }

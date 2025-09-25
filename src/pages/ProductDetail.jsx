@@ -270,7 +270,7 @@ const ProductDetail = () => {
               }}
             >
               <ShoppingCart className="w-6 h-6 mr-3 transform transition-transform duration-300 group-hover:-translate-x-1" />
-              Add to Cart
+              Buy Now
             </Link>
           </motion.div>
         </div>
